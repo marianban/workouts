@@ -34,21 +34,37 @@ class BookingRequest {
 }
 
 const zipWith = (xs, ys, f) => xs.map((x, i) => f(x, ys[i]))
-const [firstLine, secondLine] = input.split('\n').map(line => line.split(' ').map(x => parseInt(x , 10)))
-const bookingRequests = zipWith(firstLine, secondLine, (x, y) => new BookingRequest(x, y))
 
-const findBestSolution = (bestBookingRequests = []) => {
-  let newBestBookingRequests = bestBookingRequests
-  bookingRequests.forEach(nextBookingRequest => {
-    if (nextBookingRequest.isValid() && !nextBookingRequest.intersectsWithAny(bestBookingRequests)) {
-      const nextBookingRequests = findBestSolution([...bestBookingRequests, nextBookingRequest])
-      const isServingMoreCustomers = nextBookingRequests.length > newBestBookingRequests.length
-      if (isServingMoreCustomers) {
-        newBestBookingRequests = nextBookingRequests
-      }
-    }
-  })
-  return newBestBookingRequests
+class InputParser {
+  parseBookingReqests(input) {
+    const [firstLine, secondLine] = input.split('\n').map(line => line.split(' ').map(x => parseInt(x , 10)))
+    const bookingRequests = zipWith(firstLine, secondLine, (x, y) => new BookingRequest(x, y))
+    return bookingRequests
+  }
 }
 
-console.log(findBestSolution())
+class SolutionFinder {
+  constructor(bookingRequests) {
+    this.bookingRequests = bookingRequests
+  }
+
+  findBestSolution(bestBookingRequests = []) {
+    let newBestBookingRequests = bestBookingRequests
+    this.bookingRequests.forEach(nextBookingRequest => {
+      if (nextBookingRequest.isValid() && !nextBookingRequest.intersectsWithAny(bestBookingRequests)) {
+        const nextBookingRequests = this.findBestSolution([...bestBookingRequests, nextBookingRequest])
+        const isServingMoreCustomers = nextBookingRequests.length > newBestBookingRequests.length
+        if (isServingMoreCustomers) {
+          newBestBookingRequests = nextBookingRequests
+        }
+      }
+    })
+    return newBestBookingRequests
+  }
+}
+
+const inputParser = new InputParser()
+const bookingRequests = inputParser.parseBookingReqests(input)
+const solutionFinder = new SolutionFinder(bookingRequests)
+const solution = solutionFinder.findBestSolution()
+console.log(solution)
