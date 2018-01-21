@@ -1,0 +1,18 @@
+{
+  "name": "intermediate_fermats",
+  "version": "1.0.0",
+  "description": "https://www.reddit.com/r/dailyprogrammer/comments/7pmt9c/20180110_challenge_346_intermediate_fermats/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1"
+  },
+  "dependencies": {
+    "big-integer": "^1.6.26"
+  }
+}
